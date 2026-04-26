@@ -14,16 +14,16 @@
 # placeholder values in place. Only change them locally.
 # ============================================================
 
-MARIADB_ROOT_PASSWORD="YOUR_ROOT_PASSWORD"
+MARIADB_ROOT_PASSWORD="changeme_root"
 MARIADB_DATABASE="ticketdb"
 MARIADB_USER="flaskuser"
-MARIADB_PASSWORD="YOUR_PASSWORD"
+MARIADB_PASSWORD="changeme_flask"
 
 # These mirror the values above for the Flask app
 DB_HOST="db"
 DB_NAME="ticketdb"
 DB_USER="flaskuser"
-DB_PASSWORD="YOUR_PASSWORD"
+DB_PASSWORD="changeme_flask"
 
 # ============================================================
 # Do not edit below this line
@@ -32,7 +32,7 @@ DB_PASSWORD="YOUR_PASSWORD"
 NAMESPACE="ticket-app"
 
 # Check that the user has filled in their values
-if [[ "$MARIADB_ROOT_PASSWORD" == "YOUR_ROOT_PASSWORD" || "$MARIADB_PASSWORD" == "YOUR_PASSWORD" ]]; then
+if [[ "$MARIADB_ROOT_PASSWORD" == "YOUR_PASSWORD" || "$MARIADB_PASSWORD" == "YOUR_PASSWORD" ]]; then
   echo "[ERROR] You have not replaced the placeholder passwords."
   echo "        Open create-secret.sh in VSCode and update the values at the top."
   exit 1
