@@ -1,60 +1,94 @@
-# Docker Lab: Containerizing a Three-Tier Application
-**INET 4031 - Introductions to Systems**
+# Three-Tier App: Docker & Kubernetes Deployment
 
-This lab introduces Docker and Docker Compose by having you containerize a
-real, multi-service application. You will package three components: Apache,
-Flask, and MariaDB. These will be packaged into separate containers and wired together so they function as a complete application.
+A containerized ticket-tracking application built with a three-tier architecture and deployed on both Docker Compose and Kubernetes. Each service runs in its own container and communicates over a defined network — demonstrating real-world container orchestration and infrastructure practices.
 
-The application code and scaffolding are provided. Your job is to complete the Dockerfiles, verify the stack runs correctly, and document your work below.
+## Architecture
 
-> **Directions and explanations for this lab are on the repository Wiki.**
-> Refer to the Wiki pages for step-by-step instructions.
+| Tier | Technology | Role |
+|---|---|---|
+| Frontend | Apache | Serves the dashboard UI |
+| Backend | Flask (Python) | REST API for ticket operations |
+| Database | MariaDB | Stores and persists ticket data |
 
----
+## Features
 
-*The sections below are for you to fill out. Replace each placeholder with your own content before submitting. Having a detailed README is the best practice for showing your work in future GitHub repositories.*
+- View, create, and manage tickets through the UI or API
+- Full stack wired together with Docker Compose
+- Kubernetes deployment using manifest files in `k8s/`
+- Secret management via shell script (`create-secret.sh`)
+- Automated verification script (`check-lab13.sh`)
+- Environment variables managed through `.env` (not committed)
 
----
+## File Overview
 
-# Project Overview
+| File / Folder | Description |
+|---|---|
+| `app/` | Flask backend application |
+| `apache/` | Apache frontend configuration |
+| `k8s/` | Kubernetes manifests |
+| `create-secret.sh` | Creates Kubernetes secrets from `.env` values |
+| `check-lab13.sh` | Verifies the full stack is running correctly |
+| `.gitignore` | Excludes `.env` and other sensitive files |
 
-This project deploys a simple ticket‑tracking system using a three‑tier architecture.
-Apache serves the frontend dashboard, Flask provides the backend API, and MariaDB stores ticket data.
-Users can view existing tickets, check API health, and create new tickets through the UI or API.
-The purpose of the lab is to containerize each service, connect them with Docker Compose, and ensure the full stack runs correctly
+## Getting Started
 
-# Prerequisites
-
-- Docker Engine installed and running
-- Docker Compose v2
+**Prerequisites**
+- Docker Engine and Docker Compose v2
 - Git
-- Apache2 disabled on the host VM to free port 80
-- SSH access to the VM
-- Internet access to pull base images
+- Apache2 disabled on the host to free port 80
 
-# Getting Started
+**Clone the repo**
 
-- Clone the repository 
-- Create .env file and fill in placeholders
-- Create .gitingore
+```bash
+git clone https://github.com/yxbsra/inet4031-testlab13.git
+cd inet4031-testlab13
+```
 
-# Configuration
+**Set up environment variables**
 
-The .env file stores credentials and configuration values that should not be committed to GitHub.
-Docker Compose automatically loads these values and injects them into the containers.
+Create a `.env` file in the root directory with your database credentials:
 
-# Verification
+```
+MYSQL_ROOT_PASSWORD=yourpassword
+MYSQL_DATABASE=tickets
+MYSQL_USER=youruser
+MYSQL_PASSWORD=yourpassword
+```
 
-To confirm the stack is running correctly:
-- Run: docker compose ps
-- Open forntend dashboard in a browser
-- Test from CLI
-- Create a new ticket
-- Test persistence 
-- Run the check script (all tests must pass)
+**Start the stack**
 
-# Kubernetes Deployment
-- The application now runs on Kubernetes instead of Docker Compose
-- Deploy using: kubectl apply -f k8s/
-- Access the dashboard at: http://172.16.198.131:30080 
+```bash
+docker compose up -d
+```
 
+**Verify everything is running**
+
+```bash
+docker compose ps
+bash check-lab13.sh
+```
+
+## Kubernetes Deployment
+
+Apply all manifests:
+
+```bash
+kubectl apply -f k8s/
+```
+
+Create secrets before deploying:
+
+```bash
+bash create-secret.sh
+```
+
+Check pod status:
+
+```bash
+kubectl get pods
+kubectl get services
+```
+
+## Technologies
+
+`Docker` `Docker Compose` `Kubernetes` `Flask` `Apache` `MariaDB` `Python` `Shell` `DevOps`
