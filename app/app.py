@@ -1,8 +1,13 @@
 from flask import Flask, jsonify, request
 import pymysql
 import os
+import logging
 
 app = Flask(__name__)
+
+# Log full error details on the server only; never send them to the client.
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def get_db_connection():
@@ -23,8 +28,9 @@ def health():
             cursor.execute('SELECT 1')
         conn.close()
         return jsonify({'status': 'healthy', 'database': 'connected'})
-    except Exception as e:
-        return jsonify({'status': 'unhealthy', 'error': str(e)}), 500
+    except Exception:
+        logger.exception('Health check failed')
+        return jsonify({'status': 'unhealthy', 'error': 'database unavailable'}), 500
 
 
 @app.route('/api/tickets', methods=['GET'])
@@ -39,8 +45,9 @@ def get_tickets():
             if ticket.get('created_at'):
                 ticket['created_at'] = str(ticket['created_at'])
         return jsonify(tickets)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    except Exception:
+        logger.exception('Failed to fetch tickets')
+        return jsonify({'error': 'internal server error'}), 500
 
 
 @app.route('/api/tickets', methods=['POST'])
@@ -59,8 +66,9 @@ def create_ticket():
             ticket_id = cursor.lastrowid
         conn.close()
         return jsonify({'id': ticket_id, 'message': 'Ticket created successfully'}), 201
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    except Exception:
+        logger.exception('Failed to create ticket')
+        return jsonify({'error': 'internal server error'}), 500
 
 
 if __name__ == '__main__':
