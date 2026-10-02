@@ -48,6 +48,12 @@ Pipeline security practices:
 
 **Information exposure through an exception (CodeQL, 3 alerts, Medium).** The Flask error handlers returned the raw exception message (`str(e)`) to the client, which could reveal database details. The handlers now log the full error on the server and return a generic message to the client. After the fix was pushed, CodeQL re-scanned and all three alerts closed.
 
+**SonarQube Cloud findings (17 vulnerabilities → 0 open).** The first scan flagged 17 security issues. Each was triaged as fix, accept, or false positive:
+
+- **Fixed (13):** the Flask container now runs as a non-root user; all Kubernetes deployments have CPU and memory limits (plus an ephemeral-storage limit on MariaDB) and no longer auto-mount service account tokens; `pip` installs prebuilt wheels only; and `curl` in the pipeline enforces HTTPS.
+- **Accepted with documented reasons (4):** the app binds to `0.0.0.0` because it runs in a container behind a ClusterIP Service; the Apache parent process needs root to bind port 80 while workers run as `www-data`; direct dependencies are pinned to exact versions, with a hash-locked requirements file planned.
+- **False positive (1):** CSRF protection does not apply to this stateless JSON API, which uses no sessions, cookies, or HTML forms.
+
 ## File Overview
 
 | File / Folder | Description |
