@@ -1,6 +1,6 @@
 # Three-Tier App: Docker & Kubernetes Deployment
 
-[![CI](https://github.com/yxbsra/inet4031-testlab13/actions/workflows/ci.yml/badge.svg)](https://github.com/yxbsra/inet4031-testlab13/actions/workflows/ci.yml)
+[![CI](https://github.com/yxbsra/three-tier-app-docker-kubernetes/actions/workflows/ci.yml/badge.svg)](https://github.com/yxbsra/three-tier-app-docker-kubernetes/actions/workflows/ci.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=yxbsra_inet4031-testlab13&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=yxbsra_inet4031-testlab13)
 
 A containerized ticket-tracking application built with a three-tier architecture and deployed on both Docker Compose and Kubernetes. Each service runs in its own container and communicates over a defined network — demonstrating real-world container orchestration and infrastructure practices.
