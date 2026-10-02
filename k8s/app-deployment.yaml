@@ -21,6 +21,8 @@ spec:
       labels:
         app: app            # FILL IN: app  (must match matchLabels above)
     spec:
+      # The app never calls the Kubernetes API, so don't give it API credentials
+      automountServiceAccountToken: false
       containers:
         - name: app
           image: yeabsra2/flask-app:latest        # FILL IN: YOUR_DOCKERHUB_USERNAME/flask-app:latest
@@ -29,6 +31,14 @@ spec:
           envFrom:
             - secretRef:
                 name: db-credentials   # FILL IN: db-credentials
+          # Cap resource use so one container can't starve the node
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
 
 ---
 
