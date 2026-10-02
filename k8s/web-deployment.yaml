@@ -21,11 +21,21 @@ spec:
       labels:
         app: web            # FILL IN: web  (must match matchLabels above)
     spec:
+      # Apache never calls the Kubernetes API, so don't give it API credentials
+      automountServiceAccountToken: false
       containers:
         - name: web
           image: yeabsra2/apache-web:latest        # FILL IN: YOUR_DOCKERHUB_USERNAME/apache-web:latest
           ports:
             - containerPort: 80 # FILL IN: 80
+          # Cap resource use so one container can't starve the node
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
 
 ---
 
