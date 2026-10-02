@@ -148,27 +148,27 @@ jobs:
               echo ""
               echo "App is healthy"
               exit 0
-             fi
-             sleep 5
-           done
-           echo "App did not become healthy"
-           docker logs db
-           docker logs app
-           docker logs web
-           exit 1
+            fi
+            sleep 5
+          done
+          echo "App did not become healthy"
+          docker logs db
+          docker logs app
+          docker logs web
+          exit 1
 
-       - name: Run OWASP ZAP baseline scan
-         run: |
-           mkdir -p zap-report
-           chmod 777 zap-report
-           docker run --rm --network ticket-net \
-             -v "$PWD/zap-report:/zap/wrk:rw" \
-             ghcr.io/zaproxy/zaproxy:stable \
-             zap-baseline.py -t http://web -r zap-report.html -J zap-report.json -I
+      - name: Run OWASP ZAP baseline scan
+        run: |
+          mkdir -p zap-report
+          chmod 777 zap-report
+          docker run --rm --network ticket-net \
+            -v "$PWD/zap-report:/zap/wrk:rw" \
+            ghcr.io/zaproxy/zaproxy:stable \
+            zap-baseline.py -t http://web -r zap-report.html -J zap-report.json -I
 
-       - name: Upload ZAP report
-         if: always()
-         uses: actions/upload-artifact@v4
-         with:
-           name: zap-report
-           path: zap-report/
+      - name: Upload ZAP report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-report
+          path: zap-report/
