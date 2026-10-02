@@ -84,3 +84,24 @@ jobs:
         uses: github/codeql-action/analyze@v4
         with:
           category: "/language:python"
+
+    sonarqube:
+      name: SonarQube Cloud scan
+      runs-on: ubuntu-latest
+      steps:
+        - name: Check out code
+          uses: actions/checkout@v5
+          with:
+            fetch-depth: 0
+
+        - name: Cache SonarQube packages
+          uses: actions/cache@v4
+          with:
+            path: ~/.sonar/cache
+            key: ${{ runner.os }}-sonar
+            restore-keys: ${{ runner.os }}-sonar
+
+        - name: SonarQube Cloud scan
+          uses: SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995 
+          env:
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
