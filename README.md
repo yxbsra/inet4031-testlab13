@@ -72,8 +72,8 @@ Pipeline security practices:
 ### Clone the repo
 
 ```bash
-git clone https://github.com/yxbsra/inet4031-testlab13.git
-cd inet4031-testlab13
+git clone https://github.com/yxbsra/three-tier-app-docker-kubernetes.git
+cd three-tier-app-docker-kubernetes
 ```
 
 ### Set up environment variables
